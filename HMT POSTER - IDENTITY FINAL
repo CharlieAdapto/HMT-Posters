@@ -1,0 +1,268 @@
+/*
+===============
+   MAIN TAB
+===============
+*/
+
+PGraphics pg1;
+PImage eye;
+PImage mni;
+PImage yni;
+PFont champ;
+PFont champ2;
+PFont luce;
+PVector circle = new PVector(280.5, 33);
+
+void setup() {
+  size(562,794);
+  noCursor();
+  
+  //Creates image and fonts.
+  eye = loadImage("Eye.png");
+  mni = loadImage("mni.png");
+    mni.resize(420,233);
+  yni = loadImage("yni.png");
+    yni.resize(480,294);
+  champ = createFont("ChampionGothic-Featherweight.ttf", 24);
+  champ2 = createFont("ChampionGothic-Featherweight.ttf", 140);
+  luce = createFont("Lucerne Regular.ttf", 13);
+  
+  //Creates seperate PGraphics sketch for boilerplate text.
+  pg1 = createGraphics(501,521);
+  
+}
+
+void draw() {
+  background(#171717);
+
+  //Draws boilerplate text and eye.
+  drawBp();
+  
+  //Draws "OF" seperate from pg1.
+  push();
+    textFont(champ2);
+    textAlign(LEFT);
+    fill(255);
+    text("OF",87,526.5);
+  pop();
+  
+  
+  //Draws pg1.
+  pg1.beginDraw();
+    
+    pg1.fill(#CE3636);
+    pg1.textAlign(LEFT);
+    pg1.textFont(champ2);
+    
+  //Displays pg1.  
+  image(pg1, width/2, height/2 - 50);
+  
+  //Defines number and size of tiles. The number is mapped to the mouse's vertical position.
+  noStroke();
+  float tiles = (mouseY-397)/2;
+  float tileSize = width/tiles;
+  
+  //Draws 'mni.png' use a grid of circles which size are determined by the brightness of the image's pixels.
+  push();
+    translate(70, 174);
+    for (int i = 0; i < tiles; i++) {
+      for (int j = 0; j < tiles; j++) {
+        
+         color c = mni.get(int(i*tileSize),int(j*tileSize));
+         float size = map(brightness(c),0,255,0,tileSize);
+        
+         fill(#CE3636);
+         ellipse(i*tileSize,j*tileSize,size,size);
+      }
+    }
+  pop();
+  
+  //Defines number and size of tiles. This time mapped to the inverse of the mouse's vertical position.
+  float tiles2 = -((mouseY-397)/2);
+  float tileSize2 = width/tiles2;
+  
+  //Draws a second image out of circles in red.
+  push();
+    translate(40, 158);
+    for (int i = 0; i < tiles2; i++) {
+      for (int j = 0; j < tiles2; j++) {
+        
+         color c = yni.get(int(i*tileSize2),int(j*tileSize2));
+         float size = map(brightness(c),0,255,0,tileSize2);
+        
+         fill(255);
+         ellipse(i*tileSize2,j*tileSize2,size,size);
+      }
+    }
+  pop();
+  
+  //Draws a circle with a stroke on the mouse's x and y value.
+  fill(#CE3636);
+  stroke(255);
+  strokeWeight(1);
+  ellipse(mouseX,mouseY,5,5);
+  
+  
+  //Runs a snippet of code that records frames to mp4 format.
+  rec();
+  
+  if (frameCount == 1800) {
+   exit(); 
+  }
+  
+  
+}
+
+void mousePressed() {
+  
+  //Creates a number value for a random name in the name list.
+  byte index = (byte) random(names.length);
+  
+  //When mouse is pressed draws a new background and a random name from the list.
+  if (mousePressed) {
+    pg1.noStroke();
+    pg1.fill(#171717);
+    pg1.rect(145, 325, 1000, 280);
+    pg1.push();
+    pg1.fill(#CE3636);
+    pg1.text(names[index],pg1.width/2-105,pg1.height/2+180);
+    pg1.pop();
+    
+  }
+  pg1.endDraw();
+}
+
+/*
+===============
+BOILERPLATE TAB
+===============
+*/
+
+void drawBp() { 
+ 
+  //Displays "Eye.png".
+  imageMode(CENTER);
+  image(eye, width/2, 42, 60, 45);
+ 
+  //Defines a restriction for the eye pupil.
+  PVector m = new PVector(mouseX, mouseY);
+  int radius = 10;  
+  if (dist(m.x, m.y, circle.x, circle.y) > radius/2) {
+    m.sub(circle);
+    m.normalize();
+    m.mult(radius/2);
+    m.add(circle);
+  }
+
+  //Draws the pupil.
+  noStroke();
+  fill(255);
+  ellipse(m.x, m.y, 10, 10);
+  
+  //Draws bible verse name.
+  push();
+    smooth();
+    fill(#CE3636);
+    translate(30,764);
+    textFont(champ);
+    textAlign(LEFT);
+    text("GENESIS 2:22", 0, 0);
+  pop();
+  
+  //Draws "THE HANDMAID'S TALE".
+  push();
+    smooth();
+    fill(#CE3636);
+    translate(530,764);
+    textFont(champ);
+    textAlign(RIGHT);
+    text("THE HANDMAID'S TALE", 0, 0);
+  pop();
+  
+  //Creates a text for and displays the bible verse.
+  push();
+    String t = "‘The rib which the Lord God had taken from the man he made into a woman and brought her to the man. and flesh of my flesh; she shall be called Woman, because she was taken out of Man.’";
+    smooth();
+    fill(255);
+    textFont(luce);
+    translate(30, 654);
+    textAlign(LEFT);
+    text(t, 0, 0, 325, 105);
+  pop();
+ 
+}
+
+/*
+===============
+ NAMES LIST TAB
+===============
+*/
+
+//Defines the list of names that are randomly chose from.
+final String[] names = {
+"JAMES",
+"THOMAS", 
+"DANIEL",
+"JOSHUA", 
+"SAMUEL", 
+"JOSEPH", 
+"WARREN",
+"RYAN", 
+"JORDAN", 
+"LUKE", 
+"CONNOR", 
+"BEN", 
+"CALLUM",
+"GLEN",
+"LIAM", 
+"ALEX", 
+"HARRY", 
+"GEORGE", 
+"WARREN",
+"ADAM",
+"FRED",
+"LEWIS", 
+"JAKE", 
+"OLIVER", 
+"NATHAN", 
+"CHRIS", 
+"KIERAN", 
+"BRAD", 
+"JACOB", 
+"BEN", 
+"JAMIE", 
+"AARON", 
+"ROBERT", 
+"DAVID", 
+"ANDREW",
+"KYLE",  
+"CHARLIE", 
+"REECE",
+"ALEX", 
+"EDWARD",  
+"SAM", 
+"JOE",
+"JOHN",
+"SCOTT"};
+
+/*
+===============
+ RECORDING TAB
+===============
+*/
+
+final String sketchname = getClass().getName();
+
+import com.hamoid.*;
+VideoExport videoExport;
+
+void rec() {
+  if (frameCount == 1) {
+  videoExport = new VideoExport(this,"../"+sketchname+".mp4");
+  videoExport.setFrameRate(30);  
+  videoExport.startMovie();
+}
+
+  videoExport.saveFrame();
+
+}
