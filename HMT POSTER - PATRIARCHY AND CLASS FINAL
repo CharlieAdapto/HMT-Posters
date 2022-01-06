@@ -1,0 +1,265 @@
+/*
+===============
+   MAIN TAB  
+===============
+*/
+
+PGraphics pc;
+
+PImage altg;
+PImage cmdr;
+PImage wf;
+PImage ants;
+PImage mrths;
+PImage hms;
+
+PImage eye;
+PFont champ;
+PFont luce;
+
+PVector circle = new PVector(280.5, 33);
+
+void setup() {
+  size(561,794,P3D);
+  
+  //Creates image and fonts.
+  eye = loadImage("Eye.png");
+  
+  altg = loadImage("alltogether.png");
+  cmdr = loadImage("commander-01.png");
+  wf = loadImage("wife-01.png");
+  ants = loadImage("aunts-01.png");
+  mrths = loadImage("marthas-01.png");
+  hms = loadImage("handmaids-01.png");
+  
+  champ = createFont("ChampionGothic-Featherweight.ttf", 24);
+  luce = createFont("Lucerne Regular.ttf", 13);
+  
+  //Creates seperate PGraphics sketch for boilerplate text.
+  pc = createGraphics(width,height);
+}
+
+void draw() {
+  background(#171717);
+
+  //Draws boilerplate text and eye.
+  drawBp();
+  
+  //Resizes all the images to the correct size.
+  
+  //Defines details of spheres for rendering.
+  sphereDetail(1);
+  
+  //Defines number and size of tiles.
+  float tiles = mouseX/5;
+  float tileSize = width/tiles;
+  
+  boolean pressed = false;
+  float spd;
+  
+  if (mousePressed) {
+    pressed = true;
+  } else { 
+      pressed = false;
+  }
+ 
+ if (pressed == true) {
+   spd = 0.001;
+  } else {
+      spd = 0.01;
+  }
+  
+  translate(0,100);
+  scale(map(mouseY,0,width,0.9,1));
+  
+  //Draws Handmaid icons.
+  push();
+    translate(0,450);
+    push();
+      hms.resize(500,185);
+      translate(width/2,height/2);
+      rotateY(radians(frameCount)*mouseX*spd);
+    
+      for (int i = 0; i < tiles; i++) {
+        for (int j = 0; j < tiles; j++) {
+        
+          color c = hms.get(int(i*tileSize),int(j*tileSize));
+          float b = map(brightness(c),0,255,0,1);
+          float z = map(b,0,1,-100,100);
+       
+          push();
+            translate(i*tileSize - width/2,j*tileSize - height/2, z);
+            fill(#CE3636);
+            sphere(tileSize*b);
+          pop();
+       
+        }
+      }
+    
+    pop();
+  pop();
+  
+  //Draws Martha icons.
+  push();
+    translate(0,350);
+    push();
+      mrths.resize(372,185);
+      translate(width/2+70,height/2);
+      rotateY(radians(frameCount)*mouseX*spd);
+    
+      for (int i = 0; i < tiles; i++) {
+        for (int j = 0; j < tiles; j++) {
+        
+          color c = mrths.get(int(i*tileSize),int(j*tileSize));
+          float b = map(brightness(c),0,255,0,1);
+          float z = map(b,0,1,-80,80);
+       
+          push();
+            translate(i*tileSize - width/2,j*tileSize - height/2, z);
+            fill(#487568);
+            sphere(tileSize*b);
+          pop();
+        
+        }
+      }
+    
+    pop();
+  pop();
+  
+  //Draws Aunt icons.
+  push();
+    translate(0,250);
+    push();
+      ants.resize(228,185);
+      translate(width/2+140,height/2);
+      rotateY(radians(frameCount)*mouseX*spd);
+    
+      for (int i = 0; i < tiles; i++) {
+        for (int j = 0; j < tiles; j++) {
+        
+          color c = ants.get(int(i*tileSize),int(j*tileSize));
+          float b = map(brightness(c),0,255,0,1);
+          float z = map(b,0,1,-60,60);
+        
+          push();
+            translate(i*tileSize - width/2,j*tileSize - height/2, z);
+            fill(#594331);
+            sphere(tileSize*b);
+          pop();
+        
+        }
+      }
+    
+    pop();
+  pop();
+  
+  //Draws Wife icon.
+  push();
+    translate(0,150);  
+    push();
+      wf.resize(84,185);
+      translate(width/2+210,height/2);
+      rotateY(radians(frameCount)*mouseX*spd);
+    
+      for (int i = 0; i < tiles; i++) {
+        for (int j = 0; j < tiles; j++) {
+        
+          color c = wf.get(int(i*tileSize),int(j*tileSize));
+          float b = map(brightness(c),0,255,0,1);
+          float z = map(b,0,1,-40,40);
+       
+          push();
+            translate(i*tileSize - width/2,j*tileSize - height/2, z);
+            fill(#069EC1);
+            sphere(tileSize*b);
+          pop();
+       
+        }
+      }
+    
+    pop();
+ pop();
+ 
+  //Draws Commander icon.
+  push();
+    translate(0,-50);
+    push();
+      cmdr.resize(71,185);
+      translate(width/2+210,height/2);
+      rotateY(radians(frameCount)*mouseX*spd);
+    
+      for (int i = 0; i < tiles; i++) {
+        for (int j = 0; j < tiles; j++) {
+        
+          color c = cmdr.get(int(i*tileSize),int(j*tileSize));
+          float b = map(brightness(c),0,255,0,1);
+          float z = map(b,0,1,-20,20);
+       
+          push();
+            translate(i*tileSize - width/2,j*tileSize - height/2, z);
+            fill(255);
+            sphere(tileSize*b);
+          pop();
+       
+        }
+      }
+    
+    pop();
+  pop();
+}
+
+/*
+===============
+BOILERPLATE TAB  
+===============
+*/
+
+void drawBp() { 
+ 
+  imageMode(CENTER);
+  image(eye, width/2, 42, 60, 45);
+ 
+  PVector m = new PVector(mouseX, mouseY);
+  int radius = 10;
+  
+  if (dist(m.x, m.y, circle.x, circle.y) > radius/2) {
+    m.sub(circle);
+    m.normalize();
+    m.mult(radius/2);
+    m.add(circle);
+  }
+
+  noStroke();
+  fill(255);
+  ellipse(m.x, m.y, 10, 10);
+  
+  push();
+    smooth();
+    fill(#CE3636);
+    translate(30,764);
+    textFont(champ);
+    textAlign(LEFT);
+    text("EPHESIANS 5:22-25", 0, 0);
+  pop();
+  
+  push();
+    smooth();
+    fill(#CE3636);
+    translate(530,764);
+    textFont(champ);
+    textAlign(RIGHT);
+    text("THE HANDMAID'S TALE", 0, 0);
+  pop();
+  
+  push();
+    String t = "‘Wives, submit to your own husbands, as to the Lord. For the husband is head of the wife, as also Christ is head of the church; and He is the Savior of the body. Therefore, just as the church is subject to Christ, so let the wives be to their own husbands in everything.’";
+    smooth();
+    noStroke();
+    fill(255);
+    textFont(luce);
+    translate(30, 624);
+    textAlign(LEFT);
+    text(t, 0, 0, 325, 105);
+  pop();
+ 
+}
